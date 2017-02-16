@@ -17,6 +17,7 @@
     <a href="#!/phones">Return to main</a>
     
     <pre> {{ $ctrl.phone }} </pre>
+    <pre> {{ $ctrl.outData }} </pre>
 
     <li>
         <span>Name</span>
@@ -161,5 +162,5 @@
         <dd><input type="text" ng-model="$ctrl.phone.AdditionalFeatures"></dd>
     </li>
     
-    <input type="button" value="Add phone" ng-click="$ctrl.btnClick()">
+    <input type="submit" value="Add phone" ng-click="$ctrl.btnClick()">
 </ul>
