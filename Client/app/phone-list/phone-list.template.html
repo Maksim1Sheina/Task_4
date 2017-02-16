@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    
+    <div class="row">
+        
+        <div class="col-md-2">
+            <!-- Display insormation about data from JSON file.
+                <pre>{{$ctrl.phones | filter:$ctrl.query | orderBy:$ctrl.orderProp | json}}</pre> binding to see the list of phones 
+            -->
+            <p>
+                Search: <input ng-model="$ctrl.query"/>
+            </p>
+            
+            <p>
+                Sort by:
+                <select ng-model="$ctrl.orderProp">
+                    <option value="Name">Alphabetic</option>
+                    <option value="ID">Newest</option>
+                    <option value="Description">Descritpion</option>
+                </select>
+            </p> 
+            
+            <p> 
+                <b>Descending</b> <input type="checkbox" ng-model="descend">
+            </p>
+            
+            <a href="#!/phones/add">Add new device</a>
+            
+        </div>
+        
+        <div class="col-md-10">
+            
+            <ul class="phones">
+                <li ng-repeat="phone in $ctrl.phones | filter:$ctrl.query | orderBy:$ctrl.orderProp:descend" class="thumbnail phone-list-item">
+                    <a href="#!/phones/{{phone.ID}}" class="thumb">
+                        <img ng-src="{{phone.MainImageURL}}" alt="{{phone.Name}}" />
+                    </a>
+                    <a href="#!/phones/{{phone.ID}}">{{phone.Name}}</a>
+                    <p>{{phone.Description}}</p>
+                </li>
+                
+                <li>
+                    <span style="color: red; font: bold">Note:</span> number of records not used repeater.
+                    <p>Number of records in list of phones: {{$ctrl.phones.length}}</p>
+                </li>
+                
+            </ul>
+            
+        </div>
+        
+    </div>
+    
+</div>
