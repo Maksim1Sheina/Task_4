@@ -17,19 +17,52 @@
     <a href="#!/phones">Return to main</a>
     
     <pre> {{ $ctrl.phone }} </pre>
-    <pre> {{ $ctrl.outData }} </pre>
-
+    
+    <pre> {{$ctrl.Name}} </pre>
+    <pre> {{$ctrl.Description}} </pre>
+    <pre> {{$ctrl.Availabilities}} </pre>
+    <pre> {{$ctrl.BatteryType}} </pre>
+    <pre> {{$ctrl.BatteryTalkTime}} </pre>
+    <pre> {{$ctrl.BatteryStandbyTime}} </pre>
+    <pre> {{$ctrl.StorageRAM}} </pre>
+    <pre> {{$ctrl.StorageFlash}} </pre>
+    <pre> {{$ctrl.ConnectivityCell}} </pre>
+    <pre> {{$ctrl.ConnectivityWiFi}} </pre>
+    <pre> {{$ctrl.ConnectivityBluetooth}} </pre>
+    <pre> {{$ctrl.ConnectivityInfrared}} </pre>
+    <pre> {{$ctrl.ConnectivityGPS}} </pre>
+    <pre> {{$ctrl.PlatformType}} </pre>
+    <pre> {{$ctrl.PlatrormVersion}} </pre>
+    <pre> {{$ctrl.PlatformUI}} </pre>
+    <pre> {{$ctrl.Width}} </pre>
+    <pre> {{$ctrl.Height}} </pre>
+    <pre> {{$ctrl.Depth}} </pre>
+    <pre> {{$ctrl.Weight}} </pre>
+    <pre> {{$ctrl.DisplayScreenSize}} </pre>
+    <pre> {{$ctrl.DisplayScreenResolution}} </pre>
+    <pre> {{$ctrl.DisplayTouchScreen}} </pre>
+    <pre> {{$ctrl.HardwareCPU}} </pre>
+    <pre> {{$ctrl.HardwareUSB}} </pre>
+    <pre> {{$ctrl.HardwareAudioJack}} </pre>
+    <pre> {{$ctrl.HardwareFMRadio}} </pre>
+    <pre> {{$ctrl.HardwareAccelerometer}} </pre>
+    <pre> {{$ctrl.HardwarePhysicalKeyboard}} </pre>
+    <pre> {{$ctrl.CameraPrimary}} </pre>
+    <pre> {{$ctrl.CameraFeatures}} </pre>
+    <pre> {{$ctrl.AdditionalFeatures}} </pre>
+                 
+    
     <li>
         <span>Name</span>
         <dl>
-            <dd><input type="text" ng-model="$ctrl.phone.Name"></dd>
+            <dd><input type="text" ng-model="$ctrl.Name" required></dd>
         </dl>
     </li>
     
     <li>
         <span>Description</span>
         <dl>
-            <dd><input type="text" ng-model="$ctrl.phone.Description"></dd>
+            <dd><input type="text" ng-model="$ctrl.Description"></dd>
         </dl>
     </li>
     
@@ -37,7 +70,7 @@
         <span>Availability and Networks</span>
         <dl>
             <dt>Availability(to add more than one, use ','(comma))</dt>
-            <dd><input ng-model="$ctrl.phone.Availabilities" ng-list ></dd>
+            <dd><input ng-model="$ctrl.Availabilities" ng-list ></dd>
         </dl>
     </li>
     
@@ -45,11 +78,11 @@
         <span>Battery</span>
         <dl>
             <dt>Type</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.BatteryType"></dd>
+            <dd><input type="text" ng-model="$ctrl.BatteryType"></dd>
             <dt>Talk Time</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.BatteryTalkTime"></dd>
+            <dd><input type="text" ng-model="$ctrl.BatteryTalkTime"></dd>
             <dt>Standby time (max)</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.BatteryStandbyTime"></dd>
+            <dd><input type="text" ng-model="$ctrl.BatteryStandbyTime"></dd>
         </dl>
     </li>
   
@@ -57,9 +90,9 @@
         <span>Storage and Memory</span>
         <dl>
             <dt>RAM</dt>            
-            <dd><input type="range" name="RAM" ng-model="$ctrl.phone.StorageRAM" min="{{64}}"  max="{{20000}}"> <code>{{$ctrl.phone.StorageRAM}}</code> MB </dd>
+            <dd><input type="range" name="RAM" ng-model="$ctrl.StorageRAM" min="{{64}}"  max="{{20000}}" required> <code>{{$ctrl.StorageRAM}}</code> MB </dd>
             <dt>Internal Storage</dt>
-            <dd><input type="range" name="RAM" ng-model="$ctrl.phone.StorageFlash" min="{{64}}"  max="{{128000}}"> <code>{{$ctrl.phone.StorageFlash}}</code> MB </dd>
+            <dd><input type="range" name="RAM" ng-model="$ctrl.StorageFlash" min="{{64}}"  max="{{128000}}" required> <code>{{$ctrl.StorageFlash}}</code> MB </dd>
         </dl>
     </li>
   
@@ -67,18 +100,18 @@
         <span>Connectivity</span>
         <dl>
             <dt>Network Support</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.ConnectivityCell"></dd>
+            <dd><input type="text" ng-model="$ctrl.ConnectivityCell"></dd>
             <dt>WiFi</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.ConnectivityWiFi"></dd>
+            <dd><input type="text" ng-model="$ctrl.ConnectivityWiFi"></dd>
             <dt>Bluetooth</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.ConnectivityBluetooth"></dd>
+            <dd><input type="text" ng-model="$ctrl.ConnectivityBluetooth"></dd>
             <dt>Infrared</dt>
             <dd>
-                <input type="checkbox" ng-model="$ctrl.phone.ConnectivityInfrared">{{$ctrl.phone.ConnectivityInfrared | checkmark}}
+                <input type="checkbox" ng-model="$ctrl.ConnectivityInfrared">{{$ctrl.ConnectivityInfrared | checkmark}}
             </dd>
             <dt>GPS</dt>
             <dd>
-                <input type="checkbox" ng-model="$ctrl.phone.ConnectivityGPS">{{$ctrl.phone.ConnectivityGPS | checkmark}}
+                <input type="checkbox" ng-model="$ctrl.ConnectivityGPS">{{$ctrl.ConnectivityGPS | checkmark}}
             </dd>
         </dl>
     </li>
@@ -87,11 +120,11 @@
         <span>Android</span>
         <dl>
             <dt>Platrofm type</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.PlatformType"></dd>
+            <dd><input type="text" ng-model="$ctrl.PlatformType"></dd>
             <dt>Version</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.PlatrormVersion"></dd>
+            <dd><input type="text" ng-model="$ctrl.PlatrormVersion"></dd>
             <dt>UI</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.PlatformUI"></dd>
+            <dd><input type="text" ng-model="$ctrl.PlatformUI"></dd>
         </dl>
     </li>
   
@@ -99,13 +132,13 @@
         <span>Size and Weight</span>
         <dl>
             <dt>Width</dt>
-            <dd><input type="number" ng-model="$ctrl.phone.Width">(mm)</dd>
+            <dd><input type="number" ng-model="$ctrl.Width">(mm)</dd>
             <dt>Height</dt>
-            <dd><input type="number" ng-model="$ctrl.phone.Height">(mm)</dd>
+            <dd><input type="number" ng-model="$ctrl.Height">(mm)</dd>
             <dt>Depth</dt>
-            <dd><input type="number" ng-model="$ctrl.phone.Depth">(mm)</dd>
+            <dd><input type="number" ng-model="$ctrl.Depth">(mm)</dd>
             <dt>Weight</dt>
-            <dd><input type="number" ng-model="$ctrl.phone.Weight">(g)</dd>
+            <dd><input type="number" ng-model="$ctrl.Weight">(g)</dd>
         </dl>
     </li>
   
@@ -113,12 +146,12 @@
         <span>Display</span>
         <dl>
             <dt>Screen size</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.DisplayScreenSize"></dd>
+            <dd><input type="text" ng-model="$ctrl.DisplayScreenSize"></dd>
             <dt>Screen resolution</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.DisplayScreenResolution"></dd>
+            <dd><input type="text" ng-model="$ctrl.DisplayScreenResolution"></dd>
             <dt>Touch screen</dt>
             <dd>
-                <input type="checkbox" ng-model="$ctrl.phone.DisplayTouchScreen">{{$ctrl.phone.DisplayTouchScreen | checkmark}}
+                <input type="checkbox" ng-model="$ctrl.DisplayTouchScreen">{{$ctrl.DisplayTouchScreen | checkmark}}
             </dd>
         </dl>
     </li>
@@ -127,22 +160,22 @@
         <span>Hardware</span>
         <dl>
             <dt>CPU</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.HardwareCPU"></dd>
+            <dd><input type="text" ng-model="$ctrl.HardwareCPU"></dd>
             <dt>USB</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.HardwareUSB"></dd>
+            <dd><input type="text" ng-model="$ctrl.HardwareUSB"></dd>
             <dt>Audio / headphone jack</dt>
-            <dd><input type="text" ng-model="$ctrl.phone.HardwareAudioJack"></dd>
+            <dd><input type="text" ng-model="$ctrl.HardwareAudioJack"></dd>
             <dt>FM Radio</dt>
             <dd>
-                <input type="checkbox" ng-model="$ctrl.phone.HardwareFMRadio">{{$ctrl.phone.HardwareFMRadio | checkmark}}
+                <input type="checkbox" ng-model="$ctrl.HardwareFMRadio">{{$ctrl.HardwareFMRadio | checkmark}}
             </dd>
             <dt>Accelerometer</dt>
             <dd>
-                <input type="checkbox" ng-model="$ctrl.phone.HardwareAccelerometer">{{$ctrl.phone.HardwareAccelerometer | checkmark}}
+                <input type="checkbox" ng-model="$ctrl.HardwareAccelerometer">{{$ctrl.HardwareAccelerometer | checkmark}}
             </dd>
             <dt>Physical Keyboard</dt>
             <dd>
-                <input type="checkbox" ng-model="$ctrl.phone.HardwarePhysicalKeyboard">{{$ctrl.phone.HardwarePhysicalKeyboard | checkmark}}
+                <input type="checkbox" ng-model="$ctrl.HardwarePhysicalKeyboard">{{$ctrl.HardwarePhysicalKeyboard | checkmark}}
             </dd>
         </dl>
     </li>
@@ -151,16 +184,25 @@
         <span>Camera</span>
         <dl>
             <dt>Primary</dt>
-            <dd><input type="number" ng-model="$ctrl.phone.CameraPrimary"> megapixels</dd>
+            <dd><input type="number" ng-model="$ctrl.CameraPrimary"> megapixels</dd>
             <dt>Features</dt>
-            <dd><input ng-model="$ctrl.phone.CameraFeatures" ng-list ></dd>
+            <dd><input ng-model="$ctrl.CameraFeatures" ng-list ></dd>
         </dl>
     </li>
   
     <li>
         <span>Additional Features</span>
-        <dd><input type="text" ng-model="$ctrl.phone.AdditionalFeatures"></dd>
+        <dd><input type="text" ng-model="$ctrl.AdditionalFeatures"></dd>
     </li>
     
+    <!--
+    <div ngf-drop ngf-select ng-model="Images" class="drop-box" 
+        ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+        accept="image/*,application/pdf" 
+        ngf-pattern="'image/*,application/pdf'">Drop images here or click to upload</div>
+    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+    -->
+    
     <input type="submit" value="Add phone" ng-click="$ctrl.btnClick()">
+    
 </ul>
