@@ -6,5 +6,6 @@ angular.module('phonecatApp', [
     'core',
     'phoneDetail',
     'phoneList',
-    'phoneAdd'
+    'phoneAdd',
+    'phoneEdit'
 ]);

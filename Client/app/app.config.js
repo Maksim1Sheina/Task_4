@@ -13,6 +13,9 @@ angular.
                     when('/phones/add', {
                         template: '<phone-add></phone-add>'
                }).
+                    when('/phones/edit/:phoneId', {
+                        template: '<phone-edit></phone-edit>'
+               }).   
                     when('/phones/:phoneId', {
                         template: '<phone-detail></phone-detail>'
                }).                    

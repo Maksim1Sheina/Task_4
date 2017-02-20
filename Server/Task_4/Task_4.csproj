@@ -165,7 +165,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Album\" />
     <Folder Include="App_Data\" />
+    <Folder Include="ImageCache\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />

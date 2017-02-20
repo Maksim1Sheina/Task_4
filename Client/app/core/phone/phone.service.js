@@ -14,6 +14,17 @@ angular.
                 save: {
                     method: 'POST',
                     params: {phoneId: 'Phones'}
+                },
+                
+                uploadphoto: {
+                    method: 'POST',
+                    params: {phoneId: 'Phones/Upload'},
+                    headers: { 'Content-Type': undefined }
+                },
+                
+                update: {
+                    method: 'PUT',
+                    params: {phoneId: 'Phones'}
                 }
             });
         }

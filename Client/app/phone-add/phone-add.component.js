@@ -1,13 +1,26 @@
 'use strict';
 
 angular.
-    module('phoneAdd').
-    component('phoneAdd', {
+    module('phoneAdd')
+    .directive('ngFiles', ['$parse', function ($parse) {
+
+            function fn_link(scope, element, attrs) {
+                var onChange = $parse(attrs.ngFiles);
+                element.on('change', function (event) {
+                    onChange(scope, { $files: event.target.files });
+                });
+            };
+
+            return {
+                link: fn_link
+            }
+        } 
+    ])
+    .component('phoneAdd', {
         templateUrl: 'phone-add/phone-add.template.html',
-        controller: ['Phone',
-            function PhoneAddController(Phone){
+        controller: ['$scope', '$http', 'Phone',
+            function PhoneAddController($scope, $http, Phone){
                 var self = this;
-                var phone;
                 
                 self.Name = 'No data';
                 self.Description = 'No data';
@@ -42,13 +55,45 @@ angular.
                 self.CameraFeatures = ['No data', 'no data'];
                 self.AdditionalFeatures = 'No data';
                 
+                self.formdata = new FormData();
+                self.getTheFiles = function ($files) {
+                    angular.forEach($files, function (value, key) {
+                        self.formdata.append(key, value);
+                    });
+                };
+                
+                self.clearField = function clearField(id){
+                    if(document.getElementById(id).value == 'No data'){
+                        document.getElementById(id).value = '';
+                    }
+                    
+                };
+
+                // NOW UPLOAD THE FILES.
+                self.uploadFiles = function () {
+
+                    $http({
+                        method: 'POST',
+                        url: 'http://localhost:4871/api/Phones/Upload',
+                        data: self.formdata,
+                        headers: {
+                            'Content-Type': undefined
+                        }
+                    }).success(function(response){
+                        self.ImagePaths = response;
+                        alert((self.ImagePaths.length - 1) + ' files upload successfully.');
+                    }).error(function(response){
+                        alert('Upload Failed.');
+                    });
+                };              
+                
                 self.btnClick = function btnClick(){
                     var outData = new Phone();
                     outData.Name = self.Name;
                     outData.Description = self.Description;
                     outData.Availabilities = self.Availabilities;
                     outData.BatteryType = self.BatteryType;
-                    outData.BatteryTalkTime = self.atteryTalkTime;
+                    outData.BatteryTalkTime = self.BatteryTalkTime;
                     outData.BatteryStandbyTime = self.BatteryStandbyTime;
                     outData.StorageRAM = self.StorageRAM;
                     outData.StorageFlash = self.StorageFlash;
@@ -76,6 +121,7 @@ angular.
                     outData.CameraPrimary = self.CameraPrimary;
                     outData.CameraFeatures = self.CameraFeatures;
                     outData.AdditionalFeatures = self.AdditionalFeatures;
+                    outData.Images = self.ImagePaths;
                     
                     outData.$save();
                 };
