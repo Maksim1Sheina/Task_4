@@ -13,7 +13,7 @@
 
 -->
 
-<ul>
+<ul class="specs">
     <a href="#!/phones">Return to main</a>
     
     <li>
@@ -26,7 +26,7 @@
     <li>
         <span>Description</span>
         <dl>
-            <dd><input type="text" ng-model="$ctrl.Description"></dd>
+            <dd><textarea type="text" ng-model="$ctrl.Description"></textarea></dd>
         </dl>
     </li>
     
@@ -159,18 +159,6 @@
         <dd><input type="text" ng-model="$ctrl.AdditionalFeatures"></dd>
     </li>
     
-    <!--
-    <div ngf-drop ngf-select ng-model="Images" class="drop-box" 
-        ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-        accept="image/*,application/pdf" 
-        ngf-pattern="'image/*,application/pdf'">Drop images here or click to upload</div>
-    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-
-    <input type="file" id="file1" name="file" multiple
-            ng-files="$ctrl.getTheFiles($files)" />
-
-    <input type="submit" ng-click="$ctrl.uploadFiles()" value="Upload" />
-    -->
     <input type="file" id="file1" name="file" multiple
             ng-files="$ctrl.getTheFiles($files)" />
 

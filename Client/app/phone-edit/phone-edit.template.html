@@ -1,0 +1,163 @@
+<a href="#!/phones">Return to main</a>
+
+<h1>{{$ctrl.phone.Name}}</h1>
+
+<ul class="phone-thumbs">
+  <li ng-repeat="img in $ctrl.phone.Images">
+    <img ng-src="{{img}}" ng-click="$ctrl.setImage(img)" ng-Dblclick="$ctrl.onDblclick(img)"/>
+  </li>
+</ul>
+
+<input type="file" id="file1" name="file" multiple
+            ng-files="$ctrl.getTheFiles($files)" />
+
+<input type="submit" ng-click="$ctrl.uploadFiles()" value="Upload" />
+
+<ul class="specs">
+    
+    <li>
+        <span>Name</span>
+        <dl>
+            <dd><input id="Name" type="text" ng-model="$ctrl.phone.Name"></dd>
+        </dl>
+    </li>
+    
+    <li>
+        <span>Availability and Networks</span>
+        <dl>
+            <dt>Availability(to add more than one, use ','(comma))</dt>
+            <dd><input ng-model="$ctrl.phone.Availabilities" ng-list ></dd>
+        </dl>
+    </li>
+    
+    <li>
+        <span>Battery</span>
+        <dl>
+            <dt>Type</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.BatteryType"></dd>
+            <dt>Talk Time</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.BatteryTalkTime"></dd>
+            <dt>Standby time (max)</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.BatteryStandbyTime"></dd>
+        </dl>
+    </li>
+  
+    <li>
+        <span>Storage and Memory</span>
+        <dl>
+            <dt>RAM</dt>            
+            <dd><input type="range" name="RAM" ng-model="$ctrl.phone.StorageRAM" min="{{64}}"  max="{{20000}}" required> <code>{{$ctrl.phone.StorageRAM}}</code> MB </dd>
+            <dt>Internal Storage</dt>
+            <dd><input type="range" name="RAM" ng-model="$ctrl.phone.StorageFlash" min="{{64}}"  max="{{128000}}" required> <code>{{$ctrl.phone.StorageFlash}}</code> MB </dd>
+        </dl>
+    </li>
+  
+    <li>
+        <span>Connectivity</span>
+        <dl>
+            <dt>Network Support</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.ConnectivityCell"></dd>
+            <dt>WiFi</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.ConnectivityWiFi"></dd>
+            <dt>Bluetooth</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.ConnectivityBluetooth"></dd>
+            <dt>Infrared</dt>
+            <dd>
+                <input type="checkbox" ng-model="$ctrl.phone.ConnectivityInfrared">{{$ctrl.ConnectivityInfrared | checkmark}}
+            </dd>
+            <dt>GPS</dt>
+            <dd>
+                <input type="checkbox" ng-model="$ctrl.phone.ConnectivityGPS">{{$ctrl.ConnectivityGPS | checkmark}}
+            </dd>
+        </dl>
+    </li>
+  
+    <li>
+        <span>Android</span>
+        <dl>
+            <dt>Platrofm type</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.PlatformType"></dd>
+            <dt>Version</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.PlatrormVersion"></dd>
+            <dt>UI</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.PlatformUI"></dd>
+        </dl>
+    </li>
+  
+    <li>
+        <span>Size and Weight</span>
+        <dl>
+            <dt>Width</dt>
+            <dd><input type="number" ng-model="$ctrl.phone.Width">(mm)</dd>
+            <dt>Height</dt>
+            <dd><input type="number" ng-model="$ctrl.phone.Height">(mm)</dd>
+            <dt>Depth</dt>
+            <dd><input type="number" ng-model="$ctrl.phone.Depth">(mm)</dd>
+            <dt>Weight</dt>
+            <dd><input type="number" ng-model="$ctrl.phone.Weight">(g)</dd>
+        </dl>
+    </li>
+  
+    <li>
+        <span>Display</span>
+        <dl>
+            <dt>Screen size</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.DisplayScreenSize"></dd>
+            <dt>Screen resolution</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.DisplayScreenResolution"></dd>
+            <dt>Touch screen</dt>
+            <dd>
+                <input type="checkbox" ng-model="$ctrl.phone.DisplayTouchScreen">{{$ctrl.phone.DisplayTouchScreen | checkmark}}
+            </dd>
+        </dl>
+    </li>
+    
+    <li>
+        <span>Hardware</span>
+        <dl>
+            <dt>CPU</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.HardwareCPU"></dd>
+            <dt>USB</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.HardwareUSB"></dd>
+            <dt>Audio / headphone jack</dt>
+            <dd><input type="text" ng-model="$ctrl.phone.HardwareAudioJack"></dd>
+            <dt>FM Radio</dt>
+            <dd>
+                <input type="checkbox" ng-model="$ctrl.phone.HardwareFMRadio">{{$ctrl.phone.HardwareFMRadio | checkmark}}
+            </dd>
+            <dt>Accelerometer</dt>
+            <dd>
+                <input type="checkbox" ng-model="$ctrl.phone.HardwareAccelerometer">{{$ctrl.phone.HardwareAccelerometer | checkmark}}
+            </dd>
+            <dt>Physical Keyboard</dt>
+            <dd>
+                <input type="checkbox" ng-model="$ctrl.phone.HardwarePhysicalKeyboard">{{$ctrl.phone.HardwarePhysicalKeyboard | checkmark}}
+            </dd>
+        </dl>
+    </li>
+  
+    <li>
+        <span>Camera</span>
+        <dl>
+            <dt>Primary</dt>
+            <dd><input type="number" ng-model="$ctrl.phone.CameraPrimary"> megapixels</dd>
+            <dt>Features</dt>
+            <dd><input ng-model="$ctrl.phone.CameraFeatures" ng-list ></dd>
+        </dl>
+    </li>
+  
+    <li>
+        <span>Additional Features</span>
+        <dd><input type="text" ng-model="$ctrl.phone.AdditionalFeatures"></dd>
+    </li>
+    
+    <li>
+        <span>Description</span>
+        <dl>
+            <dd><textarea type="text" ng-model="$ctrl.phone.Description"></textarea></dd>
+        </dl>
+    </li>    
+    
+    <input type="submit" value="Add phone" ng-click="$ctrl.btnClick()">
+    
+</ul>

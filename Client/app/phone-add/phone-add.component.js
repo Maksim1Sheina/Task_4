@@ -81,7 +81,7 @@ angular.
                         }
                     }).success(function(response){
                         self.ImagePaths = response;
-                        alert((self.ImagePaths.length - 1) + ' files upload successfully.');
+                        alert(self.ImagePaths.length + ' files upload successfully.');
                     }).error(function(response){
                         alert('Upload Failed.');
                     });

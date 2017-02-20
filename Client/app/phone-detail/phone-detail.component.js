@@ -8,6 +8,8 @@ angular.
             function PhoneDetailController($routeParams, Phone){
                 var self = this;
                 
+                self.phoneEditID = $routeParams.phoneId;
+                
                 self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId}, function(phone){
                     self.setImage(phone.Images[0]);
                 });

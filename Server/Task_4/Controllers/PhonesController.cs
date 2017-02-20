@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -13,6 +12,7 @@ using Task_4.Models;
 using Task_4.Data_Transfer_Object;
 using System.Web.Http.Cors;
 using System.IO;
+using System.Web;
 
 namespace Task_4.Controllers
 {
@@ -65,8 +65,6 @@ namespace Task_4.Controllers
         [ResponseType(typeof(PhoneDTO))]
         public async Task<IHttpActionResult> GetPhone(int id)
         {
-            //db.Configuration.ProxyCreationEnabled = false;
-
             var searchedPhone = await db.Phones
                 .Include(s => s.Availabilities)
                 .Include(s => s.CameraFeatures)
@@ -201,30 +199,28 @@ namespace Task_4.Controllers
 
             // DEFINE THE PATH WHERE WE WANT TO SAVE THE FILES.
             Random r = new Random();
-            string cache_directory = r.Next(100, 1000000).ToString();
+
             string sPath = "";
-            sPath = System.Web.Hosting.HostingEnvironment.MapPath("~/ImageCache/");
-            Directory.CreateDirectory(sPath + cache_directory);
-            sPath = sPath + cache_directory + "\\";
+            sPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Album/");
 
             System.Web.HttpFileCollection hfc = System.Web.HttpContext.Current.Request.Files;
 
-            ImagePath.Add(cache_directory);
-
             // CHECK THE FILE COUNT.
-            for (int iCnt = 0; iCnt <= hfc.Count - 1; iCnt++)
+            for (int iCnt = 0; iCnt <= (hfc.Count / 2) - 1; iCnt++)
             {
                 System.Web.HttpPostedFile hpf = hfc[iCnt];
 
                 if (hpf.ContentLength > 0)
                 {
+                    var addedName = r.Next(10000, 10000000).ToString();
+
                     // CHECK IF THE SELECTED FILE(S) ALREADY EXISTS IN FOLDER. (AVOID DUPLICATE)
-                    if (!File.Exists(sPath + Path.GetFileName(hpf.FileName)))
+                    if (!File.Exists(sPath + addedName + Path.GetFileName(hpf.FileName)))
                     {
                         // SAVE THE FILES IN THE FOLDER.
-                        hpf.SaveAs(sPath + Path.GetFileName(hpf.FileName));
+                        hpf.SaveAs(sPath + addedName + Path.GetFileName(hpf.FileName));
                         iUploadedCnt = iUploadedCnt + 1;
-                        ImagePath.Add(sPath + Path.GetFileName(hpf.FileName));
+                        ImagePath.Add(sPath + addedName + Path.GetFileName(hpf.FileName));
                     }
                 }
             }
@@ -319,33 +315,39 @@ namespace Task_4.Controllers
             db.PhonePlatformParameters.Add(param);
             await db.SaveChangesAsync();
 
-            string cache_path = "";
-            cache_path = System.Web.Hosting.HostingEnvironment.MapPath("~/ImageCache/");
-            cache_path = cache_path + phoneValue.Images[0];
-            if (Directory.Exists(cache_path))
-            {
-                string sPath = "";
-                sPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Album/");
-                sPath = sPath + phoneValue.Images[0];
-                Directory.Move(cache_path, sPath);
-                
-                List<string> images = Directory.GetFiles(sPath).ToList();
-
-                foreach(var item in images)
+            List<string> images = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~/Album/")).ToList();
+            foreach(var item in phoneValue.Images)
+            {                    
+                if(images.Contains(item))
                 {
                     PhoneImage image = new PhoneImage()
                     {
-                        ImageURL = item,
+                        ImageURL = VirtualUrl("Album/" + Path.GetFileName(item)),
                         PhoneID = phone.ID
                     };
-
+                    
                     db.PhoneImages.Add(image);
-                }
-                await db.SaveChangesAsync();
-                                
-            }
+                }                
+            }            
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = phone.ID }, phone);
+        }
+
+        public string VirtualUrl(string relativeUrl)
+        {
+            if (string.IsNullOrEmpty(relativeUrl))
+                return relativeUrl;
+
+            if (relativeUrl.StartsWith("/"))
+                relativeUrl = relativeUrl.Insert(0, "~");
+            if (!relativeUrl.StartsWith("~/"))
+                relativeUrl = relativeUrl.Insert(0, "~/");
+
+            var url = HttpContext.Current.Request.Url;
+            var port = url.Port != 80 ? (":" + url.Port) : String.Empty;
+
+            return $"{url.Scheme}://{url.Host}{port}{VirtualPathUtility.ToAbsolute(relativeUrl)}";
         }
 
         // DELETE: api/Phones/5
