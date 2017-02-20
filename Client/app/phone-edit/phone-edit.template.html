@@ -4,14 +4,17 @@
 
 <ul class="phone-thumbs">
   <li ng-repeat="img in $ctrl.phone.Images">
-    <img ng-src="{{img}}" ng-click="$ctrl.setImage(img)" ng-Dblclick="$ctrl.onDblclick(img)"/>
+    <img ng-src="{{img}}" ng-click="$ctrl.removeImage(img)"/>
   </li>
 </ul>
 
-<input type="file" id="file1" name="file" multiple
+<div>
+    <input style="float:left" type="file" id="file1" name="file" multiple
             ng-files="$ctrl.getTheFiles($files)" />
+    
+    <input type="submit" ng-click="$ctrl.uploadFiles()" value="Upload" /> 
+</div>
 
-<input type="submit" ng-click="$ctrl.uploadFiles()" value="Upload" />
 
 <ul class="specs">
     
@@ -158,6 +161,6 @@
         </dl>
     </li>    
     
-    <input type="submit" value="Add phone" ng-click="$ctrl.btnClick()">
+    <input type="submit" value="Update data" ng-click="$ctrl.btnClick()">
     
 </ul>

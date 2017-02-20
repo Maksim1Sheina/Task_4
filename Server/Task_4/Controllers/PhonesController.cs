@@ -206,7 +206,7 @@ namespace Task_4.Controllers
             System.Web.HttpFileCollection hfc = System.Web.HttpContext.Current.Request.Files;
 
             // CHECK THE FILE COUNT.
-            for (int iCnt = 0; iCnt <= (hfc.Count / 2) - 1; iCnt++)
+            for (int iCnt = 0; iCnt <= hfc.Count - 1; iCnt++)
             {
                 System.Web.HttpPostedFile hpf = hfc[iCnt];
 

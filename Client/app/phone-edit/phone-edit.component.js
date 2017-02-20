@@ -2,36 +2,25 @@
 
 angular.
     module('phoneEdit')
-    .directive('ngFiles', ['$parse', function ($parse) {
-
-            function fn_link(scope, element, attrs) {
-                var onChange = $parse(attrs.ngFiles);
-                element.on('change', function (event) {
-                    onChange(scope, { $files: event.target.files });
-                });
-            };
-
-            return {
-                link: fn_link
-            }
-        } 
-    ])
     .component('phoneEdit', {
         templateUrl: 'phone-edit/phone-edit.template.html',
         controller: ['$scope', '$http', '$routeParams', 'Phone',
             function PhoneEditController($scope, $http, $routeParams, Phone){
                 var self = this;
                 
-                self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId}, function(phone){
-                    self.setImage(phone.Images[0]);
-                });
+                self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId});
                 
-                self.setImage = function setImage(imageUrl){
-                    self.mainImageUrl = imageUrl;
+                self.removeImage = function removeImage(imageUrl){
+                    for(var i = 0; i < self.phone.Images.length; i++){
+                        if(self.phone.Images[i].localeCompare(imageUrl) == 0){
+                            self.phone.Images.splice(i,1);
+                        }
+                    }
                 };
+                                
                 
-                self.formdata = new FormData();
                 self.getTheFiles = function ($files) {
+                    self.formdata = new FormData();
                     angular.forEach($files, function (value, key) {
                         self.formdata.append(key, value);
                     });
@@ -55,7 +44,7 @@ angular.
                         }
                     }).success(function(response){
                         self.ImagePaths = response;
-                        alert((self.ImagePaths.length - 1) + ' files upload successfully.');
+                        alert(self.ImagePaths.length + ' files upload successfully.');
                     }).error(function(response){
                         alert('Upload Failed.');
                     });

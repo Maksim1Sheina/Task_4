@@ -2,20 +2,6 @@
 
 angular.
     module('phoneAdd')
-    .directive('ngFiles', ['$parse', function ($parse) {
-
-            function fn_link(scope, element, attrs) {
-                var onChange = $parse(attrs.ngFiles);
-                element.on('change', function (event) {
-                    onChange(scope, { $files: event.target.files });
-                });
-            };
-
-            return {
-                link: fn_link
-            }
-        } 
-    ])
     .component('phoneAdd', {
         templateUrl: 'phone-add/phone-add.template.html',
         controller: ['$scope', '$http', 'Phone',
@@ -55,8 +41,9 @@ angular.
                 self.CameraFeatures = ['No data', 'no data'];
                 self.AdditionalFeatures = 'No data';
                 
-                self.formdata = new FormData();
+                
                 self.getTheFiles = function ($files) {
+                    self.formdata = new FormData();
                     angular.forEach($files, function (value, key) {
                         self.formdata.append(key, value);
                     });
