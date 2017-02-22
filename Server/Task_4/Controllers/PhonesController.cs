@@ -159,105 +159,130 @@ namespace Task_4.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutPhone(int id, PhoneDTO phoneValue)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != phoneValue.ID)
-            {
-                return BadRequest();
-            }
-
-            Phone phone = new Phone()
-            {
-                ID = phoneValue.ID,
-                AdditionalFeatures = phoneValue.AdditionalFeatures,
-                BatteryStandbyTime = phoneValue.BatteryStandbyTime + " hours",
-                BatteryTalkTime = phoneValue.BatteryTalkTime + " hours",
-                BatteryType = phoneValue.BatteryType,
-                CameraPrimary = phoneValue.CameraPrimary,
-                ConnectivityBluetooth = phoneValue.ConnectivityBluetooth,
-                ConnectivityCell = phoneValue.ConnectivityCell,
-                ConnectivityGPS = phoneValue.ConnectivityGPS,
-                ConnectivityInfrared = phoneValue.ConnectivityInfrared,
-                ConnectivityWiFi = phoneValue.ConnectivityWiFi,
-                Description = phoneValue.Description,
-                DisplayScreenResolution = phoneValue.DisplayScreenResolution,
-                DisplayScreenSize = phoneValue.DisplayScreenSize,
-                DisplayTouchScreen = phoneValue.DisplayTouchScreen,
-                HardwareAccelerometer = phoneValue.HardwareAccelerometer,
-                HardwareAudioJack = phoneValue.HardwareAudioJack,
-                HardwareCPU = phoneValue.HardwareCPU,
-                HardwareFMRadio = phoneValue.HardwareFMRadio,
-                HardwarePhysicalKeyboard = phoneValue.HardwarePhysicalKeyboard,
-                HardwareUSB = phoneValue.HardwareUSB,
-                Name = phoneValue.Name,
-                Width = phoneValue.Width,
-                Height = phoneValue.Height,
-                Depth = phoneValue.Depth,
-                Weight = phoneValue.Weight,
-                StorageFlash = phoneValue.StorageFlash,
-                StorageRAM = phoneValue.StorageRAM
-            };
-            db.Entry(phone).State = EntityState.Modified;
-
-            foreach (var item in phoneValue.Availabilities)
-            {
-                PhoneAvailability availabilities = new PhoneAvailability()
-                {
-                    Availability = item,
-                    PhoneID = phone.ID
-                };
-
-                db.Entry(availabilities).State = EntityState.Modified;
-            }
-
-            foreach (var item in phoneValue.CameraFeatures)
-            {
-                PhoneCameraFeature feature = new PhoneCameraFeature()
-                {
-                    CameraFeature = item,
-                    PhoneID = phone.ID
-                };
-
-                db.Entry(feature).State = EntityState.Modified;
-            }
-
-            PhonePlatformParameters param = new PhonePlatformParameters()
-            {
-                PhoneID = phone.ID,
-                PlatformType = phoneValue.PlatformType,
-                PlatrormVersion = phoneValue.PlatrormVersion,
-                PlatformUI = phoneValue.PlatformUI
-            };
-            db.Entry(param).State = EntityState.Modified;
-
-            List<string> images = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~/Album/")).ToList();
-            List<string> virtual_paths = new List<string>();
-            foreach (var item in images)
-            {
-                virtual_paths.Add(VirtualUrl("Album/" + Path.GetFileName(item)));
-            }
-
-            foreach (var item in phoneValue.Images)
-            {
-                if (virtual_paths.Contains(item))
-                {
-                    PhoneImage image = new PhoneImage()
-                    {
-                        ImageURL = item,
-                        PhoneID = phone.ID
-                    };
-                    
-                    db.Entry(image).State = EntityState.Modified;
-                }
-            }
-
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                if (id != phoneValue.ID)
+                {
+                    return BadRequest();
+                }
+
+                Phone phone = new Phone()
+                {
+                    ID = id,
+                    AdditionalFeatures = phoneValue.AdditionalFeatures,
+                    BatteryStandbyTime = phoneValue.BatteryStandbyTime + " hours",
+                    BatteryTalkTime = phoneValue.BatteryTalkTime + " hours",
+                    BatteryType = phoneValue.BatteryType,
+                    CameraPrimary = phoneValue.CameraPrimary,
+                    ConnectivityBluetooth = phoneValue.ConnectivityBluetooth,
+                    ConnectivityCell = phoneValue.ConnectivityCell,
+                    ConnectivityGPS = phoneValue.ConnectivityGPS,
+                    ConnectivityInfrared = phoneValue.ConnectivityInfrared,
+                    ConnectivityWiFi = phoneValue.ConnectivityWiFi,
+                    Description = phoneValue.Description,
+                    DisplayScreenResolution = phoneValue.DisplayScreenResolution,
+                    DisplayScreenSize = phoneValue.DisplayScreenSize,
+                    DisplayTouchScreen = phoneValue.DisplayTouchScreen,
+                    HardwareAccelerometer = phoneValue.HardwareAccelerometer,
+                    HardwareAudioJack = phoneValue.HardwareAudioJack,
+                    HardwareCPU = phoneValue.HardwareCPU,
+                    HardwareFMRadio = phoneValue.HardwareFMRadio,
+                    HardwarePhysicalKeyboard = phoneValue.HardwarePhysicalKeyboard,
+                    HardwareUSB = phoneValue.HardwareUSB,
+                    Name = phoneValue.Name,
+                    Width = phoneValue.Width,
+                    Height = phoneValue.Height,
+                    Depth = phoneValue.Depth,
+                    Weight = phoneValue.Weight,
+                    StorageFlash = phoneValue.StorageFlash,
+                    StorageRAM = phoneValue.StorageRAM
+                };
+                db.Entry(phone).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+
+                var availabilitiesQuery = db.PhoneAvailabilities.Where(s => s.PhoneID == id).ToList();
+                foreach (var item in availabilitiesQuery)
+                {
+                    db.PhoneAvailabilities.Remove(item);
+                }
+                await db.SaveChangesAsync();
+
+                foreach (var item in phoneValue.Availabilities)
+                {
+                    PhoneAvailability availabilities = new PhoneAvailability()
+                    {
+                        Availability = item,
+                        PhoneID = id
+                    };
+
+                    db.PhoneAvailabilities.Add(availabilities);
+                }
+                await db.SaveChangesAsync();
+
+                var featuresQuery = db.PhoneCameraFeatures.Where(s => s.PhoneID == id).ToList();
+                foreach (var item in featuresQuery)
+                {
+                    db.PhoneCameraFeatures.Remove(item);
+                }
+                await db.SaveChangesAsync();
+
+                foreach (var item in phoneValue.CameraFeatures)
+                {
+                    PhoneCameraFeature feature = new PhoneCameraFeature()
+                    {
+                        CameraFeature = item,
+                        PhoneID = id
+                    };
+
+                    db.PhoneCameraFeatures.Add(feature);
+                }
+                await db.SaveChangesAsync();
+
+                PhonePlatformParameters param = new PhonePlatformParameters()
+                {
+                    PhoneID = id,
+                    PlatformType = phoneValue.PlatformType,
+                    PlatrormVersion = phoneValue.PlatrormVersion,
+                    PlatformUI = phoneValue.PlatformUI
+                };
+                db.Entry(param).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+
+                var imageQuery = db.PhoneImages.Where(s => s.PhoneID == id).ToList();
+                foreach (var item in imageQuery)
+                {
+                    db.PhoneImages.Remove(item);
+                }
+                await db.SaveChangesAsync();
+
+                List<string> images = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~/Album/")).ToList();
+                List<string> virtual_paths = new List<string>();
+                foreach (var item in images)
+                {
+                    virtual_paths.Add(VirtualUrl("Album/" + Path.GetFileName(item)));
+                }
+
+                foreach (var item in phoneValue.Images)
+                {
+                    if (virtual_paths.Contains(item))
+                    {
+                        PhoneImage image = new PhoneImage()
+                        {
+                            ImageURL = item,
+                            PhoneID = id
+                        };
+
+                        db.PhoneImages.Add(image);
+                    }
+                }
                 await db.SaveChangesAsync();
             }
+
             catch (DbUpdateConcurrencyException)
             {
                 if (!PhoneExists(id))
