@@ -47,6 +47,25 @@ angular.
                     angular.forEach($files, function (value, key) {
                         self.formdata.append(key, value);
                     });
+                    self.somefunc();
+                };
+                
+                self.somefunc = function (){
+                    var output = '<b> Image for uploading: </b>';
+                    
+                    for (var value of self.formdata.values()) {
+                        output += '<li>' + value.name + '</li>';
+                    }
+                    
+                    document.getElementById('result').innerHTML = output;
+                };
+                
+                self.removeImage = function removeImage(imageUrl){
+                    for(var i = 0; i < self.ImagePaths.length; i++){
+                        if(self.ImagePaths[i].localeCompare(imageUrl) == 0){
+                            self.ImagePaths.splice(i,1);
+                        }
+                    }                    
                 };
                 
                 self.clearField = function clearField(id){
@@ -67,10 +86,12 @@ angular.
                             'Content-Type': undefined
                         }
                     }).success(function(response){
-                        self.ImagePaths = response;
-                        alert(self.ImagePaths.length + ' files upload successfully.');
+                        self.ImagePaths = [];
+                        self.ImagePaths = response.concat(self.ImagePaths);
+                        document.getElementById('result').innerHTML = '';
+                        alert(response.length + ' files upload successfully.');
                     }).error(function(response){
-                        alert('Upload Failed.');
+                        alert(response + ' Try again later.');
                     });
                 };              
                 
@@ -110,7 +131,15 @@ angular.
                     outData.AdditionalFeatures = self.AdditionalFeatures;
                     outData.Images = self.ImagePaths;
                     
-                    outData.$save();
+                    outData.$save().then(
+                        function(response){
+                            alert(response);
+                            
+                        },
+                        function(response){
+                            alert(response);
+                        }
+                    );
                 };
             }
         ]

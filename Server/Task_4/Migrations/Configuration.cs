@@ -206,31 +206,31 @@ namespace Task_4.Migrations
             );
 
             context.PhoneImages.AddOrUpdate(x => x.ID,
-                new PhoneImage() { ID = 1, ImageURL = "img/phones/dell-streak-7.0.jpg", PhoneID = 1 },
-                new PhoneImage() { ID = 2, ImageURL = "img/phones/dell-streak-7.1.jpg", PhoneID = 1 },
-                new PhoneImage() { ID = 3, ImageURL = "img/phones/dell-streak-7.2.jpg", PhoneID = 1 },
-                new PhoneImage() { ID = 4, ImageURL = "img/phones/dell-streak-7.3.jpg", PhoneID = 1 },
-                new PhoneImage() { ID = 5, ImageURL = "img/phones/dell-streak-7.4.jpg", PhoneID = 1 },
+                new PhoneImage() { ID = 1, ImageURL = "http://localhost:4871/Album/dell-streak-7.0.jpg", PhoneID = 1 },
+                new PhoneImage() { ID = 2, ImageURL = "http://localhost:4871/Album/dell-streak-7.1.jpg", PhoneID = 1 },
+                new PhoneImage() { ID = 3, ImageURL = "http://localhost:4871/Album/dell-streak-7.2.jpg", PhoneID = 1 },
+                new PhoneImage() { ID = 4, ImageURL = "http://localhost:4871/Album/dell-streak-7.3.jpg", PhoneID = 1 },
+                new PhoneImage() { ID = 5, ImageURL = "http://localhost:4871/Album/dell-streak-7.4.jpg", PhoneID = 1 },
 
-                new PhoneImage() { ID = 6, ImageURL = "img/phones/droid-2-global-by-motorola.0.jpg", PhoneID = 2 },
-                new PhoneImage() { ID = 7, ImageURL = "img/phones/droid-2-global-by-motorola.1.jpg", PhoneID = 2 },
-                new PhoneImage() { ID = 8, ImageURL = "img/phones/droid-2-global-by-motorola.2.jpg", PhoneID = 2 },
+                new PhoneImage() { ID = 6, ImageURL = "http://localhost:4871/Album/droid-2-global-by-motorola.0.jpg", PhoneID = 2 },
+                new PhoneImage() { ID = 7, ImageURL = "http://localhost:4871/Album/droid-2-global-by-motorola.1.jpg", PhoneID = 2 },
+                new PhoneImage() { ID = 8, ImageURL = "http://localhost:4871/Album/droid-2-global-by-motorola.2.jpg", PhoneID = 2 },
 
-                new PhoneImage() { ID = 9, ImageURL = "img/phones/motorola-xoom.0.jpg", PhoneID = 3 },
-                new PhoneImage() { ID = 10, ImageURL = "img/phones/motorola-xoom.1.jpg", PhoneID = 3 },
-                new PhoneImage() { ID = 11, ImageURL = "img/phones/motorola-xoom.2.jpg", PhoneID = 3 },
+                new PhoneImage() { ID = 9, ImageURL = "http://localhost:4871/Album/motorola-xoom.0.jpg", PhoneID = 3 },
+                new PhoneImage() { ID = 10, ImageURL = "http://localhost:4871/Album/motorola-xoom.1.jpg", PhoneID = 3 },
+                new PhoneImage() { ID = 11, ImageURL = "http://localhost:4871/Album/motorola-xoom.2.jpg", PhoneID = 3 },
 
-                new PhoneImage() { ID = 12, ImageURL = "img/phones/motorola-xoom-with-wi-fi.0.jpg", PhoneID = 4 },
-                new PhoneImage() { ID = 13, ImageURL = "img/phones/motorola-xoom-with-wi-fi.1.jpg", PhoneID = 4 },
-                new PhoneImage() { ID = 14, ImageURL = "img/phones/motorola-xoom-with-wi-fi.2.jpg", PhoneID = 4 },
-                new PhoneImage() { ID = 15, ImageURL = "img/phones/motorola-xoom-with-wi-fi.3.jpg", PhoneID = 4 },
-                new PhoneImage() { ID = 16, ImageURL = "img/phones/motorola-xoom-with-wi-fi.4.jpg", PhoneID = 4 },
-                new PhoneImage() { ID = 17, ImageURL = "img/phones/motorola-xoom-with-wi-fi.5.jpg", PhoneID = 4 },
+                new PhoneImage() { ID = 12, ImageURL = "http://localhost:4871/Album/motorola-xoom-with-wi-fi.0.jpg", PhoneID = 4 },
+                new PhoneImage() { ID = 13, ImageURL = "http://localhost:4871/Album/motorola-xoom-with-wi-fi.1.jpg", PhoneID = 4 },
+                new PhoneImage() { ID = 14, ImageURL = "http://localhost:4871/Album/motorola-xoom-with-wi-fi.2.jpg", PhoneID = 4 },
+                new PhoneImage() { ID = 15, ImageURL = "http://localhost:4871/Album/motorola-xoom-with-wi-fi.3.jpg", PhoneID = 4 },
+                new PhoneImage() { ID = 16, ImageURL = "http://localhost:4871/Album/motorola-xoom-with-wi-fi.4.jpg", PhoneID = 4 },
+                new PhoneImage() { ID = 17, ImageURL = "http://localhost:4871/Album/motorola-xoom-with-wi-fi.5.jpg", PhoneID = 4 },
 
-                new PhoneImage() { ID = 18, ImageURL = "img/phones/nexus-s.0.jpg", PhoneID = 5 },
-                new PhoneImage() { ID = 19, ImageURL = "img/phones/nexus-s.1.jpg", PhoneID = 5 },
-                new PhoneImage() { ID = 20, ImageURL = "img/phones/nexus-s.2.jpg", PhoneID = 5 },
-                new PhoneImage() { ID = 21, ImageURL = "img/phones/nexus-s.3.jpg", PhoneID = 5 }
+                new PhoneImage() { ID = 18, ImageURL = "http://localhost:4871/Album/nexus-s.0.jpg", PhoneID = 5 },
+                new PhoneImage() { ID = 19, ImageURL = "http://localhost:4871/Album/nexus-s.1.jpg", PhoneID = 5 },
+                new PhoneImage() { ID = 20, ImageURL = "http://localhost:4871/Album/nexus-s.2.jpg", PhoneID = 5 },
+                new PhoneImage() { ID = 21, ImageURL = "http://localhost:4871/Album/nexus-s.3.jpg", PhoneID = 5 }
             );
 
             context.PhonePlatformParameters.AddOrUpdate(

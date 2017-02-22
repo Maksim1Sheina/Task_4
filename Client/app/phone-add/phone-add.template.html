@@ -1,25 +1,27 @@
-<!--
-<div class="phone-images">
-    <img ng-src="{{img}}" class="phone"
-         ng-class="{selected: img === $ctrl.mainImageUrl}"
-         ng-repeat="img in $ctrl.phone.Images" />
-</div>
+<a href="#!/phones">Return to main</a>
+
+<h1>{{$ctrl.phone.Name}}</h1>
 
 <ul class="phone-thumbs">
-  <li ng-repeat="img in $ctrl.phone.Images">
-    <img ng-src="{{img}}" ng-click="$ctrl.setImage(img)" ng-Dblclick="$ctrl.onDblclick(img)"/>
+  <li ng-repeat="img in $ctrl.ImagePaths">
+    <img ng-src="{{img}}" ng-click="$ctrl.removeImage(img)"/>
   </li>
 </ul>
-
--->
-
-<ul class="specs">
-    <a href="#!/phones">Return to main</a>
     
+<div>
+    <div id="result"></div>
+
+    <input style="float:left" type="file" id="file1" name="file" multiple
+            ng-files="$ctrl.getTheFiles($files)" />
+
+    <input type="button" ng-click="$ctrl.uploadFiles()" value="Upload" />    
+</div>
+
+<ul class="specs">   
     <li>
         <span>Name</span>
         <dl>
-            <dd><input id="Name" type="text" ng-model="$ctrl.Name" required ng-click="$ctrl.clearField('Name')"></dd>
+            <dd><input id="Name" type="text" ng-model="$ctrl.Name" ng-click="$ctrl.clearField('Name')"></dd>
         </dl>
     </li>
     
@@ -159,12 +161,6 @@
         <dd><input type="text" ng-model="$ctrl.AdditionalFeatures"></dd>
     </li>
     
-    <input type="file" id="file1" name="file" multiple
-            ng-files="$ctrl.getTheFiles($files)" />
-
-    <input type="submit" ng-click="$ctrl.uploadFiles()" value="Upload" />
-    
-    
-    <input type="submit" value="Add phone" ng-click="$ctrl.btnClick()">
+    <input type="button" value="Add phone" ng-click="$ctrl.btnClick()">
     
 </ul>

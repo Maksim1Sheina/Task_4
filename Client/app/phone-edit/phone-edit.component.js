@@ -17,13 +17,23 @@ angular.
                         }
                     }
                 };
-                                
+                
+                self.somefunc = function (){
+                    var output = '<b> Image for uploading: </b>';
+                    
+                    for (var value of self.formdata.values()) {
+                        output += '<li>' + value.name + '</li>';
+                    }
+                    
+                    document.getElementById('result').innerHTML = output;
+                };
                 
                 self.getTheFiles = function ($files) {
                     self.formdata = new FormData();
                     angular.forEach($files, function (value, key) {
                         self.formdata.append(key, value);
                     });
+                    self.somefunc();
                 };
                 
                 self.clearField = function clearField(id){
@@ -32,7 +42,7 @@ angular.
                     }                    
                 };
 
-                // NOW UPLOAD THE FILES.
+                
                 self.uploadFiles = function () {
 
                     $http({
@@ -43,15 +53,17 @@ angular.
                             'Content-Type': undefined
                         }
                     }).success(function(response){
-                        self.ImagePaths = response;
-                        alert(self.ImagePaths.length + ' files upload successfully.');
+                        self.phone.Images = response.concat(self.phone.Images);
+                        document.getElementById('result').innerHTML = '';
+                        alert(response.length + ' files upload successfully.');
                     }).error(function(response){
-                        alert('Upload Failed.');
+                        alert(response + ' Try again later.');
                     });
                 };              
                 
                 self.btnClick = function btnClick(){
                     var outData = new Phone();
+                    outData.ID = $routeParams.phoneId;
                     outData.Name = self.phone.Name;
                     outData.Description = self.phone.Description;
                     outData.Availabilities = self.phone.Availabilities;
@@ -84,9 +96,18 @@ angular.
                     outData.CameraPrimary = self.phone.CameraPrimary;
                     outData.CameraFeatures = self.phone.CameraFeatures;
                     outData.AdditionalFeatures = self.phone.AdditionalFeatures;
-                    outData.Images = self.phone.ImagePaths;
+                    outData.Images = self.phone.Images;
                     
                     outData.$update({phoneId: 'Phones/' + $routeParams.phoneId});
+                        /*.then(
+                        function(response){
+                            alert(response);
+                            
+                        },
+                        function(response){
+                            alert(response);
+                        }
+                    );*/
                 };
             }
         ]

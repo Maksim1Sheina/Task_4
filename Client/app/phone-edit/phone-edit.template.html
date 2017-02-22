@@ -9,12 +9,13 @@
 </ul>
 
 <div>
+    <div id="result"></div>
+    
     <input style="float:left" type="file" id="file1" name="file" multiple
             ng-files="$ctrl.getTheFiles($files)" />
     
-    <input type="submit" ng-click="$ctrl.uploadFiles()" value="Upload" /> 
+    <input type="button" ng-click="$ctrl.uploadFiles()" value="Upload" /> 
 </div>
-
 
 <ul class="specs">
     
@@ -161,6 +162,6 @@
         </dl>
     </li>    
     
-    <input type="submit" value="Update data" ng-click="$ctrl.btnClick()">
+    <input type="button" value="Update data" ng-click="$ctrl.btnClick()">
     
 </ul>
