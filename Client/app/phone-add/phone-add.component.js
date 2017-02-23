@@ -91,7 +91,7 @@ angular.
                         document.getElementById('result').innerHTML = '';
                         alert(response.length + ' files upload successfully.');
                     }).error(function(response){
-                        alert(response + ' Try again later.');
+                        alert('Server error. Update page or try again later. ' + response.message);
                     });
                 };              
                 
@@ -131,13 +131,13 @@ angular.
                     outData.AdditionalFeatures = self.AdditionalFeatures;
                     outData.Images = self.ImagePaths;
                     
-                    outData.$save().then(
+                    outData.$save().$promise.then(
                         function(response){
-                            alert(response);
-                            
+                            alert('Phone successfully added.');
+                            document.location.href = "#!/phones";
                         },
                         function(response){
-                            alert(response);
+                            alert('Server error. Update page or try again later. ' + response.message);
                         }
                     );
                 };

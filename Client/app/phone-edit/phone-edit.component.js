@@ -8,7 +8,15 @@ angular.
             function PhoneEditController($scope, $http, $routeParams, Phone){
                 var self = this;
                 
-                self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId});
+                self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId}).$promise.then(
+                    function(response){
+                        
+                    },
+                    
+                    function(response){
+                        alert('Server error. Update page or try again later. ' + response.message);
+                    }
+                );
                 
                 self.removeImage = function removeImage(imageUrl){
                     for(var i = 0; i < self.phone.Images.length; i++){
@@ -57,13 +65,12 @@ angular.
                         document.getElementById('result').innerHTML = '';
                         alert(response.length + ' files upload successfully.');
                     }).error(function(response){
-                        alert(response + ' Try again later.');
+                        alert('Server error. Update page or try again later. ' + response.message);
                     });
                 };              
                 
                 self.btnClick = function btnClick(){
                     var outData = new Phone();
-                    outData.ID = $routeParams.phoneId;
                     outData.Name = self.phone.Name;
                     outData.Description = self.phone.Description;
                     outData.Availabilities = self.phone.Availabilities;
@@ -98,16 +105,15 @@ angular.
                     outData.AdditionalFeatures = self.phone.AdditionalFeatures;
                     outData.Images = self.phone.Images;
                     
-                    outData.$update({phoneId: 'Phones/' + $routeParams.phoneId});
-                        /*.then(
+                    outData.$update({phoneId: 'Phones/' + $routeParams.phoneId}).$promise.then(
                         function(response){
-                            alert(response);
-                            
+                            alert('Data updated successfully');
+                            document.location.href = "#!/phones";
                         },
                         function(response){
-                            alert(response);
+                            alert('Server error. Update page or try again later. ' + response.message);
                         }
-                    );*/
+                    );
                 };
             }
         ]

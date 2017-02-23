@@ -13,6 +13,7 @@ using Task_4.Data_Transfer_Object;
 using System.Web.Http.Cors;
 using System.IO;
 using System.Web;
+using System.Net.Http;
 
 namespace Task_4.Controllers
 {
@@ -22,137 +23,182 @@ namespace Task_4.Controllers
         private Task_4Context db = new Task_4Context();
 
         // GET: api/Phones
-        //[Route("api/Phones")]
         public IList<PhoneShortInformation> GetPhones()
         {
-            var rQuery = from p in db.Phones.Include(s => s.Images)
-                         select new PhoneShortInformation()
-                         {
-                             ID = p.ID,
-                             Name = p.Name,
-                             Description = p.Description,
-                             MainImageURL = p.Images.Where(s => s.PhoneID == p.ID).FirstOrDefault().ImageURL
-                         };
-
-            var phones = rQuery.ToList();
-
-            foreach(var item in phones)
+            try
             {
-                item.Description = SplitDesc(item.Description);
+                var rQuery = from p in db.Phones.Include(s => s.Images)
+                             select new PhoneShortInformation()
+                             {
+                                 ID = p.ID,
+                                 Name = p.Name,
+                                 Description = p.Description,
+                                 MainImageURL = p.Images.Where(s => s.PhoneID == p.ID).FirstOrDefault().ImageURL
+                             };
+
+                var phones = rQuery.ToList();
+
+                foreach (var item in phones)
+                {
+                    item.Description = SplitDesc(item.Description);
+                }
+
+                return phones;
             }
 
-            return phones;
+            catch(HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         private string SplitDesc(string Description)
         {
-            string[] arrString = Description.Split(' ');
-            string outValue = "";
-            foreach(var item in arrString)
+            try
             {
-                if (outValue.Length < 50)
-                    outValue = outValue + " " + item;
+                string[] arrString = Description.Split(' ');
+                string outValue = "";
+                foreach (var item in arrString)
+                {
+                    if (outValue.Length < 50)
+                        outValue = outValue + " " + item;
 
-                else
-                    break;
+                    else
+                        break;
+                }
+
+                outValue = outValue + "...";
+                return outValue;
             }
-
-            outValue = outValue + "...";
-            return outValue;
+            catch(HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         // GET: api/Phones/5
         [ResponseType(typeof(PhoneDTO))]
         public async Task<IHttpActionResult> GetPhone(int id)
         {
-            var searchedPhone = await db.Phones
-                .Include(s => s.Availabilities)
-                .Include(s => s.CameraFeatures)
-                .Include(s => s.Images)
-                .Include(s => s.PlatformParameters)
-                .Where(p => p.ID == id)
-                .SingleOrDefaultAsync();
-
-            if(searchedPhone == null)
+            try
             {
-                return NotFound();
+                var searchedPhone = await db.Phones
+                    .Include(s => s.Availabilities)
+                    .Include(s => s.CameraFeatures)
+                    .Include(s => s.Images)
+                    .Include(s => s.PlatformParameters)
+                    .Where(p => p.ID == id)
+                    .SingleOrDefaultAsync();
+
+                if (searchedPhone == null)
+                {
+                    return NotFound();
+                }
+
+                var phone = new PhoneDTO()
+                {
+                    AdditionalFeatures = searchedPhone.AdditionalFeatures,
+                    BatteryStandbyTime = searchedPhone.BatteryStandbyTime,
+                    BatteryTalkTime = searchedPhone.BatteryTalkTime,
+                    BatteryType = searchedPhone.BatteryType,
+                    CameraPrimary = searchedPhone.CameraPrimary,
+                    ConnectivityBluetooth = searchedPhone.ConnectivityBluetooth,
+                    ConnectivityCell = searchedPhone.ConnectivityCell,
+                    ConnectivityGPS = searchedPhone.ConnectivityGPS,
+                    ConnectivityInfrared = searchedPhone.ConnectivityInfrared,
+                    ConnectivityWiFi = searchedPhone.ConnectivityWiFi,
+                    Description = searchedPhone.Description,
+                    DisplayScreenResolution = searchedPhone.DisplayScreenResolution,
+                    DisplayScreenSize = searchedPhone.DisplayScreenSize,
+                    DisplayTouchScreen = searchedPhone.DisplayTouchScreen,
+                    HardwareAccelerometer = searchedPhone.HardwareAccelerometer,
+                    HardwareAudioJack = searchedPhone.HardwareAudioJack,
+                    HardwareCPU = searchedPhone.HardwareCPU,
+                    HardwareFMRadio = searchedPhone.HardwareFMRadio,
+                    HardwarePhysicalKeyboard = searchedPhone.HardwarePhysicalKeyboard,
+                    HardwareUSB = searchedPhone.HardwareUSB,
+                    Name = searchedPhone.Name,
+                    Width = searchedPhone.Width,
+                    Height = searchedPhone.Height,
+                    Depth = searchedPhone.Depth,
+                    Weight = searchedPhone.Weight,
+                    StorageFlash = searchedPhone.StorageFlash,
+                    StorageRAM = searchedPhone.StorageRAM,
+                    PlatformType = searchedPhone.PlatformParameters.PlatformType,
+                    PlatrormVersion = searchedPhone.PlatformParameters.PlatrormVersion,
+                    PlatformUI = searchedPhone.PlatformParameters.PlatformUI,
+
+                    Availabilities = ToListFromRequaest(searchedPhone.Availabilities),
+                    CameraFeatures = ToListFromRequaest(searchedPhone.CameraFeatures),
+                    Images = ToListFromRequaest(searchedPhone.Images)
+                };
+
+                return Ok(phone);
             }
 
-            var phone = new PhoneDTO()
+            catch (HttpResponseException error)
             {
-                AdditionalFeatures = searchedPhone.AdditionalFeatures,
-                BatteryStandbyTime = searchedPhone.BatteryStandbyTime,
-                BatteryTalkTime = searchedPhone.BatteryTalkTime,
-                BatteryType = searchedPhone.BatteryType,
-                CameraPrimary = searchedPhone.CameraPrimary,
-                ConnectivityBluetooth = searchedPhone.ConnectivityBluetooth,
-                ConnectivityCell = searchedPhone.ConnectivityCell,
-                ConnectivityGPS = searchedPhone.ConnectivityGPS,
-                ConnectivityInfrared = searchedPhone.ConnectivityInfrared,
-                ConnectivityWiFi = searchedPhone.ConnectivityWiFi,
-                Description = searchedPhone.Description,
-                DisplayScreenResolution = searchedPhone.DisplayScreenResolution,
-                DisplayScreenSize = searchedPhone.DisplayScreenSize,
-                DisplayTouchScreen = searchedPhone.DisplayTouchScreen,
-                HardwareAccelerometer = searchedPhone.HardwareAccelerometer,
-                HardwareAudioJack = searchedPhone.HardwareAudioJack,
-                HardwareCPU = searchedPhone.HardwareCPU,
-                HardwareFMRadio = searchedPhone.HardwareFMRadio,
-                HardwarePhysicalKeyboard = searchedPhone.HardwarePhysicalKeyboard,
-                HardwareUSB = searchedPhone.HardwareUSB,
-                Name = searchedPhone.Name,
-                Width = searchedPhone.Width,
-                Height = searchedPhone.Height,
-                Depth = searchedPhone.Depth,
-                Weight = searchedPhone.Weight,
-                StorageFlash = searchedPhone.StorageFlash,
-                StorageRAM = searchedPhone.StorageRAM,
-                PlatformType = searchedPhone.PlatformParameters.PlatformType,
-                PlatrormVersion = searchedPhone.PlatformParameters.PlatrormVersion,
-                PlatformUI = searchedPhone.PlatformParameters.PlatformUI,
-
-                Availabilities = ToListFromRequaest(searchedPhone.Availabilities),
-                CameraFeatures = ToListFromRequaest(searchedPhone.CameraFeatures),
-                Images = ToListFromRequaest(searchedPhone.Images)
-            };
-
-            return Ok(phone);
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         private List<string> ToListFromRequaest(ICollection<PhoneAvailability> list)
         {
-            var outList = new List<string>();
-
-            foreach(var item in list)
+            try
             {
-                outList.Add(item.Availability);
+                var outList = new List<string>();
+
+                foreach (var item in list)
+                {
+                    outList.Add(item.Availability);
+                }
+
+                return outList;
             }
 
-            return outList;
+            catch (HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         private List<string> ToListFromRequaest(ICollection<PhoneCameraFeature> list)
         {
-            var outList = new List<string>();
-
-            foreach (var item in list)
+            try
             {
-                outList.Add(item.CameraFeature);
-            }
+                var outList = new List<string>();
 
-            return outList;
+                foreach (var item in list)
+                {
+                    outList.Add(item.CameraFeature);
+                }
+
+                return outList;
+            }
+            catch (HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         private List<string> ToListFromRequaest(ICollection<PhoneImage> list)
         {
-            var outList = new List<string>();
-
-            foreach (var item in list)
+            try
             {
-                outList.Add(item.ImageURL);
+                var outList = new List<string>();
+
+                foreach (var item in list)
+                {
+                    outList.Add(item.ImageURL);
+                }
+
+                return outList;
             }
 
-            return outList;
+            catch (HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         // PUT: api/Phones/5
@@ -203,14 +249,12 @@ namespace Task_4.Controllers
                     StorageRAM = phoneValue.StorageRAM
                 };
                 db.Entry(phone).State = EntityState.Modified;
-                await db.SaveChangesAsync();
 
                 var availabilitiesQuery = db.PhoneAvailabilities.Where(s => s.PhoneID == id).ToList();
                 foreach (var item in availabilitiesQuery)
                 {
                     db.PhoneAvailabilities.Remove(item);
                 }
-                await db.SaveChangesAsync();
 
                 foreach (var item in phoneValue.Availabilities)
                 {
@@ -222,14 +266,12 @@ namespace Task_4.Controllers
 
                     db.PhoneAvailabilities.Add(availabilities);
                 }
-                await db.SaveChangesAsync();
 
                 var featuresQuery = db.PhoneCameraFeatures.Where(s => s.PhoneID == id).ToList();
                 foreach (var item in featuresQuery)
                 {
                     db.PhoneCameraFeatures.Remove(item);
                 }
-                await db.SaveChangesAsync();
 
                 foreach (var item in phoneValue.CameraFeatures)
                 {
@@ -241,7 +283,6 @@ namespace Task_4.Controllers
 
                     db.PhoneCameraFeatures.Add(feature);
                 }
-                await db.SaveChangesAsync();
 
                 PhonePlatformParameters param = new PhonePlatformParameters()
                 {
@@ -251,14 +292,12 @@ namespace Task_4.Controllers
                     PlatformUI = phoneValue.PlatformUI
                 };
                 db.Entry(param).State = EntityState.Modified;
-                await db.SaveChangesAsync();
 
                 var imageQuery = db.PhoneImages.Where(s => s.PhoneID == id).ToList();
                 foreach (var item in imageQuery)
                 {
                     db.PhoneImages.Remove(item);
                 }
-                await db.SaveChangesAsync();
 
                 List<string> images = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~/Album/")).ToList();
                 List<string> virtual_paths = new List<string>();
@@ -280,7 +319,13 @@ namespace Task_4.Controllers
                         db.PhoneImages.Add(image);
                     }
                 }
+
                 await db.SaveChangesAsync();
+            }
+
+            catch (HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
             }
 
             catch (DbUpdateConcurrencyException)
@@ -302,47 +347,55 @@ namespace Task_4.Controllers
         [Route("api/Phones/Upload")]
         public List<string> UploadFiles()
         {
-            int iUploadedCnt = 0;
-            List<string> ImagePath = new List<string>();
-
-            // DEFINE THE PATH WHERE WE WANT TO SAVE THE FILES.
-            Random r = new Random();
-
-            string sPath = "";
-            sPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Album/");
-
-            System.Web.HttpFileCollection hfc = System.Web.HttpContext.Current.Request.Files;
-
-            // CHECK THE FILE COUNT.
-            for (int iCnt = 0; iCnt <= hfc.Count - 1; iCnt++)
+            try
             {
-                System.Web.HttpPostedFile hpf = hfc[iCnt];
+                int iUploadedCnt = 0;
+                List<string> ImagePath = new List<string>();
 
-                if (hpf.ContentLength > 0)
+                // DEFINE THE PATH WHERE WE WANT TO SAVE THE FILES.
+                Random r = new Random();
+
+                string sPath = "";
+                sPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Album/");
+
+                System.Web.HttpFileCollection hfc = System.Web.HttpContext.Current.Request.Files;
+
+                // CHECK THE FILE COUNT.
+                for (int iCnt = 0; iCnt <= hfc.Count - 1; iCnt++)
                 {
-                    var addedName = r.Next(10000, 10000000).ToString();
+                    System.Web.HttpPostedFile hpf = hfc[iCnt];
 
-                    // CHECK IF THE SELECTED FILE(S) ALREADY EXISTS IN FOLDER. (AVOID DUPLICATE)
-                    if (!File.Exists(sPath + addedName + Path.GetFileName(hpf.FileName)))
+                    if (hpf.ContentLength > 0)
                     {
-                        // SAVE THE FILES IN THE FOLDER.
-                        hpf.SaveAs(sPath + addedName + Path.GetFileName(hpf.FileName));
-                        iUploadedCnt = iUploadedCnt + 1;
-                        ImagePath.Add(VirtualUrl("Album/" + addedName + Path.GetFileName(hpf.FileName)));
+                        var addedName = r.Next(10000, 10000000).ToString();
+
+                        // CHECK IF THE SELECTED FILE(S) ALREADY EXISTS IN FOLDER. (AVOID DUPLICATE)
+                        if (!File.Exists(sPath + addedName + Path.GetFileName(hpf.FileName)))
+                        {
+                            // SAVE THE FILES IN THE FOLDER.
+                            hpf.SaveAs(sPath + addedName + Path.GetFileName(hpf.FileName));
+                            iUploadedCnt = iUploadedCnt + 1;
+                            ImagePath.Add(VirtualUrl("Album/" + addedName + Path.GetFileName(hpf.FileName)));
+                        }
                     }
+                }
+
+                // RETURN A MESSAGE (OPTIONAL).
+                if (iUploadedCnt > 0)
+                {
+                    return ImagePath;
+                }
+                else
+                {
+                    ImagePath.Clear();
+                    ImagePath.Add("Upload Failed");
+                    return ImagePath;
                 }
             }
 
-            // RETURN A MESSAGE (OPTIONAL).
-            if (iUploadedCnt > 0)
+            catch (HttpResponseException error)
             {
-                return ImagePath;
-            }
-            else
-            {
-                ImagePath.Clear();
-                ImagePath.Add("Upload Failed");
-                return ImagePath;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
             }
         }
 
@@ -400,7 +453,6 @@ namespace Task_4.Controllers
 
                     db.PhoneAvailabilities.Add(availabilities);
                 }
-                await db.SaveChangesAsync();
 
                 foreach (var item in phoneValue.CameraFeatures)
                 {
@@ -412,7 +464,6 @@ namespace Task_4.Controllers
 
                     db.PhoneCameraFeatures.Add(feature);
                 }
-                await db.SaveChangesAsync();
 
                 PhonePlatformParameters param = new PhonePlatformParameters()
                 {
@@ -422,7 +473,6 @@ namespace Task_4.Controllers
                     PlatformUI = phoneValue.PlatformUI
                 };
                 db.PhonePlatformParameters.Add(param);
-                await db.SaveChangesAsync();
 
                 List<string> images = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~/Album/")).ToList();
                 List<string> virtual_paths = new List<string>();
@@ -444,47 +494,64 @@ namespace Task_4.Controllers
                         db.PhoneImages.Add(image);
                     }
                 }
+
                 await db.SaveChangesAsync();
 
                 return StatusCode(HttpStatusCode.OK);
             }
 
-            catch (DbUpdateConcurrencyException)
+            catch(HttpResponseException error)
             {
-                return StatusCode(HttpStatusCode.InternalServerError);
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
             }
         }
 
         public string VirtualUrl(string relativeUrl)
         {
-            if (string.IsNullOrEmpty(relativeUrl))
-                return relativeUrl;
+            try
+            {
+                if (string.IsNullOrEmpty(relativeUrl))
+                    return relativeUrl;
 
-            if (relativeUrl.StartsWith("/"))
-                relativeUrl = relativeUrl.Insert(0, "~");
-            if (!relativeUrl.StartsWith("~/"))
-                relativeUrl = relativeUrl.Insert(0, "~/");
+                if (relativeUrl.StartsWith("/"))
+                    relativeUrl = relativeUrl.Insert(0, "~");
+                if (!relativeUrl.StartsWith("~/"))
+                    relativeUrl = relativeUrl.Insert(0, "~/");
 
-            var url = HttpContext.Current.Request.Url;
-            var port = url.Port != 80 ? (":" + url.Port) : String.Empty;
+                var url = HttpContext.Current.Request.Url;
+                var port = url.Port != 80 ? (":" + url.Port) : String.Empty;
 
-            return $"{url.Scheme}://{url.Host}{port}{VirtualPathUtility.ToAbsolute(relativeUrl)}";
+                return $"{url.Scheme}://{url.Host}{port}{VirtualPathUtility.ToAbsolute(relativeUrl)}";
+            }
+
+            catch (HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         // DELETE: api/Phones/5
-        [ResponseType(typeof(Phone))]
+        [ResponseType(typeof(PhoneDTO))]
         public async Task<IHttpActionResult> DeletePhone(int id)
         {
-            Phone phone = await db.Phones.FindAsync(id);
-            if (phone == null)
+            try
             {
-                return NotFound();
+                Phone phone = await db.Phones.FindAsync(id);
+                if (phone == null)
+                {
+                    return NotFound();
+                }
+
+                db.Phones.Remove(phone);
+                await db.SaveChangesAsync();
+
+                return Ok(phone);
             }
 
-            db.Phones.Remove(phone);
-            await db.SaveChangesAsync();
-
-            return Ok(phone);
+            catch (HttpResponseException error)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, String.Format("Server error. Try again later. \n Server errors: {0}", error.Message)));
+            }
         }
 
         protected override void Dispose(bool disposing)

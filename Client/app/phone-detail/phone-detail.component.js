@@ -12,7 +12,14 @@ angular.
                 
                 self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId}, function(phone){
                     self.setImage(phone.Images[0]);
-                });
+                }).$promise.then(
+                    function(response){
+                        
+                    },
+                    function(response){
+                        alert('Server error. Update page or try again later. ' + response.message);
+                    }
+                );
                 
                 self.setImage = function setImage(imageUrl){
                     self.mainImageUrl = imageUrl;
