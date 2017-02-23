@@ -40,7 +40,7 @@ angular.
                 self.CameraPrimary = 0;
                 self.CameraFeatures = ['No data', 'no data'];
                 self.AdditionalFeatures = 'No data';
-                
+                self.ImagePaths = [];
                 
                 self.getTheFiles = function ($files) {
                     self.formdata = new FormData();
@@ -86,7 +86,6 @@ angular.
                             'Content-Type': undefined
                         }
                     }).success(function(response){
-                        self.ImagePaths = [];
                         self.ImagePaths = response.concat(self.ImagePaths);
                         document.getElementById('result').innerHTML = '';
                         alert(response.length + ' files upload successfully.');
@@ -131,7 +130,8 @@ angular.
                     outData.AdditionalFeatures = self.AdditionalFeatures;
                     outData.Images = self.ImagePaths;
                     
-                    outData.$save().$promise.then(
+                    outData.$save();
+                    /*.$promise.then(
                         function(response){
                             alert('Phone successfully added.');
                             document.location.href = "#!/phones";
@@ -139,7 +139,7 @@ angular.
                         function(response){
                             alert('Server error. Update page or try again later. ' + response.message);
                         }
-                    );
+                    );*/
                 };
             }
         ]

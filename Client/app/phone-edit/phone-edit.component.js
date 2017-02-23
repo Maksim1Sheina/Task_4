@@ -8,7 +8,8 @@ angular.
             function PhoneEditController($scope, $http, $routeParams, Phone){
                 var self = this;
                 
-                self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId}).$promise.then(
+                self.phone = Phone.get({phoneId: 'Phones/' + $routeParams.phoneId});
+                    /*.$promise.then(
                     function(response){
                         
                     },
@@ -16,7 +17,7 @@ angular.
                     function(response){
                         alert('Server error. Update page or try again later. ' + response.message);
                     }
-                );
+                );*/
                 
                 self.removeImage = function removeImage(imageUrl){
                     for(var i = 0; i < self.phone.Images.length; i++){
@@ -71,6 +72,7 @@ angular.
                 
                 self.btnClick = function btnClick(){
                     var outData = new Phone();
+                    outData.ID = $routeParams.phoneId;
                     outData.Name = self.phone.Name;
                     outData.Description = self.phone.Description;
                     outData.Availabilities = self.phone.Availabilities;
@@ -105,7 +107,8 @@ angular.
                     outData.AdditionalFeatures = self.phone.AdditionalFeatures;
                     outData.Images = self.phone.Images;
                     
-                    outData.$update({phoneId: 'Phones/' + $routeParams.phoneId}).$promise.then(
+                    outData.$update({phoneId: 'Phones/' + $routeParams.phoneId});
+                        /*.$promise.then(
                         function(response){
                             alert('Data updated successfully');
                             document.location.href = "#!/phones";
@@ -113,7 +116,7 @@ angular.
                         function(response){
                             alert('Server error. Update page or try again later. ' + response.message);
                         }
-                    );
+                    );*/
                 };
             }
         ]

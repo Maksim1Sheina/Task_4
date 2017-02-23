@@ -1,7 +1,3 @@
-<a href="#!/phones">Return to main</a>
-<a href="#!/phones/edit/{{$ctrl.phoneEditID}}">Edit</a>
-
-
 <h1>{{$ctrl.phone.Name}}</h1>
 
 <div class="phone-images">
@@ -10,7 +6,7 @@
          ng-repeat="img in $ctrl.phone.Images" />
 </div>
 
-<p>{{$ctrl.phone.Description}}</p>
+<p style="margin-left: 470px">{{$ctrl.phone.Description}}</p>
 
 <ul class="phone-thumbs">
   <li ng-repeat="img in $ctrl.phone.Images">
@@ -18,7 +14,7 @@
   </li>
 </ul>
 
-<ul class="specs">
+<ul class="specs"> 
     <li>
         <span>Availability and Networks</span>
         <dl>
@@ -135,4 +131,9 @@
         <span>Additional Features</span>
         <dd>{{$ctrl.phone.AdditionalFeatures}}</dd>
     </li>
+</ul>
+
+<ul class="nav nav-pills" style="margin-top: 30px">
+  <li role="presentation" class="active"><a href="#!/phones">Return to main</a></li>
+  <li role="presentation" class="active"><a href="#!/phones/edit/{{$ctrl.phoneEditID}}">Edit</a></li>
 </ul>

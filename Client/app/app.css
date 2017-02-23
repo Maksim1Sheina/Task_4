@@ -1,5 +1,6 @@
 body {
    padding: 20px;
+   background-color: beige;
  }
  
  h1 {
@@ -91,3 +92,9 @@ body {
    font-size: 1.2em;
    font-weight: bold;
  }
+
+.shift_down{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
